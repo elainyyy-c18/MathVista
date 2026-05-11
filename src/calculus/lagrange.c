@@ -4,30 +4,6 @@
 #include <string.h>
 #include <math.h>
 
-mv_status_t numeric_gradient(MVec* grad, scalar_field_fn f, const MVec* x, void* user_data, double h)
-{
-    if (!grad || !f || !x) return MV_ERR_NULL_PTR;
-    if (grad->dim != x->dim) return MV_ERR_DIM_MISMATCH;
-    if (h <= 0.0) return MV_ERR_OUT_OF_RANGE;
-    MVec xc;
-    mv_status_t st = mvec_create(&xc, x->dim);
-    if (st != MV_OK) return st;
-    memcpy(xc.data, x->data, x->dim * sizeof(double));
-
-    for (size_t i = 0; i < x->dim; ++i)
-    {
-        double orig = xc.data[i];
-        xc.data[i] = orig + h;
-        double fp = f(&xc, user_data);
-        xc.data[i] = orig - h;
-        double fm = f(&xc, user_data);
-        xc.data[i] = orig;
-        grad->data[i] = (fp - fm) / (2.0 * h);
-    }
-    mvec_destroy(&xc);
-    return MV_OK;
-}
-
 mv_status_t lagrange_solve(MVec* x_out, double* lambda_out, scalar_field_fn f, scalar_field_fn g, void* f_ud, void* g_ud, const MVec* x_init, int max_iter, double tol)
 {
     if (!x_out || !f || !g || !x_init) return MV_ERR_NULL_PTR;
@@ -53,7 +29,6 @@ mv_status_t lagrange_solve(MVec* x_out, double* lambda_out, scalar_field_fn f, s
         if (st != MV_OK) goto cleanup;
         st = numeric_gradient(&grad_g, g, x_out, g_ud, h);
         if (st != MV_OK) goto cleanup;
-
         double gg, fg;
         mvec_dot(&gg, &grad_g, &grad_g);
         if (gg < sing_eps)
@@ -82,7 +57,11 @@ mv_status_t lagrange_solve(MVec* x_out, double* lambda_out, scalar_field_fn f, s
 
         double tan_norm;
         mvec_norm(&tan_norm, &step);
-        if (tan_norm < tol) { converged = true; break; }
+        if (tan_norm < tol)
+        {
+            converged = true;
+            break;
+        }
     }
     if (lambda_out)
     {

@@ -17,6 +17,7 @@ SRCS_DISC = \
     src/discrete/catalan.c
 
 SRCS_CALC = \
+    src/calculus/gradient.c \
     src/calculus/lagrange.c \
     src/calculus/transform3d.c
 
