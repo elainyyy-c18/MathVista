@@ -464,7 +464,7 @@ static void run_interactive_menu(const char* prog)
                 wait_for_enter();
                 break;
             case 0:
-                printf("Goodbye.\n");
+                printf("Goodbye!\n");
                 return;
             default:
                 printf("Invalid choice. Please enter a number from 0 to 9.\n");

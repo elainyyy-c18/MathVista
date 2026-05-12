@@ -159,6 +159,14 @@ data structures, and algorithm behavior:
   <img src="docs/images/3dtransform.png" width="720" alt="3-D transform demo terminal output">
 </p>
 
+<p align="center">
+  <img src="docs/images/calculus.png" width="720" alt="3-D transform demo terminal output">
+</p>
+
+<p align="center">
+  <img src="docs/images/quicksort.png" width="720" alt="3-D transform demo terminal output">
+</p>
+
 ---
 
 ## Project Structure
