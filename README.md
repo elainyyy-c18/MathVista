@@ -45,7 +45,7 @@ You can also run every demo directly:
 .\bin\mathvista.exe all
 ```
 
-> Tip: if you see `?` characters in the output, your console is probably not using UTF-8. Run `chcp 65001` once in the same terminal session.
+> Tip: if you see `?` characters in the output, your console is probably not using UTF-8. Run `.\run_menu.bat` once in the same terminal session.
 
 ### Linux / macOS / MSYS2 / WSL
 
@@ -59,6 +59,8 @@ You can also run every demo directly:
 ```bash
 ./bin/mathvista all
 ```
+
+> Tip: On Windows, `.\build.bat` is used to compile the project. `.\run_menu.bat` is used to run the interactive menu with UTF-8 output, which helps avoid `?` characters in the terminal.
 
 ### Single-demo run
 
@@ -97,7 +99,7 @@ MathVista-C Interactive Demo Menu
 0. Exit
 ```
 
-This menu is intentionally simple. It is designed for portfolio demonstration: a reviewer can compile the project, choose a topic, and immediately see the relevant algorithm or mathematical module run.
+This menu is intentionally simple. It is designed for portfolio demonstration: a reviewer can compile the project, choose a topic, and immediately see the relevant algorithm or mathematical module run. On Windows, `run_menu.bat` can be used to open this menu with UTF-8 output enabled.
 
 ---
 
@@ -202,6 +204,7 @@ MathVista-C/
 ├── docs/images/              # suggested location for generated screenshots
 ├── build.bat                 # Windows native build
 ├── diagnose.bat              # per-file compile diagnostic for Windows
+├── runmenu.bat               # chcp65001 avoiding ? characters in the terminal.
 ├── Makefile                  # Unix build
 └── README.md
 ```
@@ -365,7 +368,7 @@ if (st != MV_OK)
 | `undefined reference to mvec_create` | source file missing or truncated | run `diagnose.bat` and check compile steps |
 | `command syntax incorrect` from `.bat` | LF line endings in Windows batch file | re-save `.bat` with CRLF line endings |
 | `implicit declaration of aligned_alloc` | older MinGW compatibility issue | use the current `memory_pool.c` implementation based on `malloc` |
-| `?` characters in terminal output | console is not using UTF-8 | run `chcp 65001` on Windows |
+| `?` characters in terminal output | Windows console is not using UTF-8 | run `.\run_menu.bat`, or manually run `chcp 65001` before `.\bin\mathvista.exe menu` |
 | DOT files exist but no PNG appears | Graphviz is not installed or not run | install Graphviz and run `dot -Tpng ...` |
 | CSV exists but no plot image appears | gnuplot is not installed or not run | install gnuplot and run `gnuplot output/sinc.gp` |
 
