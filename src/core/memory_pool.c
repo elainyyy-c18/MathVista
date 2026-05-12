@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
+
 #define MP_ALIGN 16
 
 static size_t align_up(size_t n, size_t a)
@@ -16,12 +17,12 @@ mv_status_t mempool_create(MemPool* p, size_t block_size, size_t block_count)
     if (block_count == 0) return MV_ERR_OUT_OF_RANGE;
     size_t bs = block_size < sizeof(MemPoolFreeNode) ? sizeof(MemPoolFreeNode) : block_size;
     bs = align_up(bs, MP_ALIGN);
-
-    p->buffer = aligned_alloc(MP_ALIGN, bs * block_count);
+    p->buffer = malloc(bs * block_count);
     if (!p->buffer) return MV_ERR_ALLOC;
     p->block_size = bs;
     p->block_count = block_count;
     p->used_count = 0;
+
     p->free_list = NULL;
     for (size_t i = 0; i < block_count; ++i)
     {
@@ -40,7 +41,6 @@ void mempool_destroy(MemPool* p)
     p->free_list = NULL;
     p->block_size = p->block_count = p->used_count = 0;
 }
-
 void* mempool_alloc(MemPool* p)
 {
     if (!p || !p->free_list) return NULL;
@@ -49,7 +49,6 @@ void* mempool_alloc(MemPool* p)
     p->used_count++;
     return node;
 }
-
 void mempool_free(MemPool* p, void* ptr)
 {
     if (!p || !ptr) return;
@@ -62,7 +61,6 @@ void mempool_free(MemPool* p, void* ptr)
     p->free_list = node;
     p->used_count--;
 }
-
 void mempool_reset(MemPool* p)
 {
     if (!p || !p->buffer) return;
@@ -90,7 +88,6 @@ mv_status_t mempool_stats(const MemPool* p, MemPoolStats* out)
 void mempool_render_ascii(const MemPool* p)
 {
     if (!p || !p->buffer) return;
-
     char* map = malloc(p->block_count);
     if (!map) return;
     memset(map, '#', p->block_count);
@@ -99,10 +96,11 @@ void mempool_render_ascii(const MemPool* p)
         size_t idx = ((unsigned char *)n - p->buffer) / p->block_size;
         if (idx < p->block_count) map[idx] = '.';
     }
-
     MemPoolStats s;
     mempool_stats(p, &s);
-    printf("MemPool @ %p  block=%zuB  total=%zu  used=%zu  free=%zu  util=%.1f%%\n", (void *)p->buffer, s.block_size, s.total_blocks, s.used_blocks, s.free_blocks, s.utilization * 100.0);
+    printf("MemPool @ %p  block=%zuB  total=%zu  used=%zu  free=%zu  util=%.1f%%\n",
+           (void *)p->buffer, s.block_size, s.total_blocks,
+           s.used_blocks, s.free_blocks, s.utilization * 100.0);
     const size_t cols = 64;
     for (size_t i = 0; i < p->block_count; ++i)
     {
