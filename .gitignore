@@ -1,0 +1,79 @@
+# Build outputs
+bin/
+build/
+obj/
+out/
+
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+
+# macOS debug symbols
+*.dSYM/
+
+
+# Generated visualization output
+output/
+outputs/
+
+*.dot
+*.csv
+*.gnuplot
+*.gp
+*.plt
+
+
+# Keep selected portfolio images
+!docs/
+!docs/images/
+!docs/images/.gitkeep
+!docs/images/*.png
+!docs/images/*.jpg
+!docs/images/*.jpeg
+!docs/images/*.gif
+!docs/images/*.svg
+
+
+# Test / coverage files
+*.gcda
+*.gcno
+*.gcov
+coverage/
+coverage.info
+
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+
+# OS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor / IDE files
+.vscode/
+.idea/
+*.code-workspace
+
+
+# Local notes / patch files
+SUMMARY.md
+mathvista_menu_patch.diff
+mathvista_menu_patch_fixed.diff

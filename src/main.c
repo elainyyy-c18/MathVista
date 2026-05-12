@@ -347,7 +347,131 @@ static void print_usage(const char* prog)
     printf("Usage: %s [demo ...]\n\n  Available demos:\n", prog);
     for (int i = 0; i < n_demos; ++i)
         printf("    %-12s  %s\n", demos[i].name, demos[i].desc);
-    printf("    %-12s  Run every demo\n\n", "all");
+    printf(" %-12s Run every demo\n", "all");
+    printf(" %-12s Open interactive demo menu\n\n", "menu");
+}
+static int demo_index_by_name(const char* name) {
+    for (int i = 0; i < n_demos; ++i) {
+        if (strcmp(demos[i].name, name) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static void run_demo_by_name(const char* name) {
+    int idx = demo_index_by_name(name);
+
+    if (idx < 0) {
+        printf("Demo '%s' was not found.\n", name);
+        return;
+    }
+
+    demos[idx].fn();
+}
+
+static int read_menu_choice(void) {
+    char line[64];
+    int choice;
+    char extra;
+
+    printf("Choose a demo: ");
+    fflush(stdout);
+
+    if (fgets(line, sizeof(line), stdin) == NULL) {
+        return 0;
+    }
+
+    if (sscanf(line, " %d %c", &choice, &extra) != 1) {
+        return -1;
+    }
+
+    return choice;
+}
+
+static void wait_for_enter(void) {
+    char line[64];
+
+    printf("\nPress Enter to return to the menu...");
+    fflush(stdout);
+
+    fgets(line, sizeof(line), stdin);
+}
+
+static void run_interactive_menu(const char* prog)
+{
+    (void)prog;
+    while (1)
+    {
+        printf("\n");
+        mv_banner("MathVista-C Interactive Demo");
+        printf(" 1. Discrete Math Demos\n");
+        printf(" 2. Calculus / Visualization Demos\n");
+        printf(" 3. QuickSort Visualization\n");
+        printf(" 4. DFS / BFS Graph Traversal\n");
+        printf(" 5. Radix Tree Visualization\n");
+        printf(" 6. Skip List Visualization\n");
+        printf(" 7. Memory Pool Demo\n");
+        printf(" 8. 3-D Transform Demo\n");
+        printf(" 9. Run All Demos\n");
+        printf(" 0. Exit\n\n");
+
+        int choice = read_menu_choice();
+        printf("\n");
+
+        switch (choice)
+        {
+            case 1:
+                run_demo_by_name("stirling");
+                run_demo_by_name("catalan");
+                wait_for_enter();
+                break;
+            case 2:
+                run_demo_by_name("lagrange");
+                run_demo_by_name("ascii");
+                run_demo_by_name("csv");
+                wait_for_enter();
+                break;
+            case 3:
+                run_demo_by_name("sort");
+                wait_for_enter();
+                break;
+            case 4:
+                run_demo_by_name("graph");
+                wait_for_enter();
+                break;
+            case 5:
+                run_demo_by_name("radix");
+                wait_for_enter();
+                break;
+            case 6:
+                run_demo_by_name("skiplist");
+                wait_for_enter();
+                break;
+            case 7:
+                run_demo_by_name("mempool");
+                wait_for_enter();
+                break;
+            case 8:
+                run_demo_by_name("transform");
+                wait_for_enter();
+                break;
+            case 9:
+                for (int i = 0; i < n_demos; ++i)
+                {
+                    demos[i].fn();
+                }
+                wait_for_enter();
+                break;
+            case 0:
+                printf("Goodbye.\n");
+                return;
+            default:
+                printf("Invalid choice. Please enter a number from 0 to 9.\n");
+                wait_for_enter();
+                break;
+        }
+    }
 }
 
 int main(int argc, char** argv)
@@ -358,6 +482,11 @@ int main(int argc, char** argv)
         print_usage(argv[0]);
         printf("  No demo specified – running 'stirling' as default.\n");
         demo_stirling();
+        return 0;
+    }
+    if (strcmp(argv[1], "menu") == 0 || strcmp(argv[1], "--menu") == 0)
+    {
+        run_interactive_menu(argv[0]);
         return 0;
     }
     MvTimer total;

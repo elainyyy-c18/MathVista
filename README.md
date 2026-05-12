@@ -1,8 +1,32 @@
 # MathVista-C
 
-**Academic Mathematics Visualisation & Computation Engine**
+**Academic Mathematics Visualisation & Computation Engine written in C11**
 
-A high-performance C11 library demonstrating algorithm design, numerical methods, and data-structure implementation through discrete mathematics and calculus. Every module is independently testable, zero-dependency beyond the C standard library and `libm`, and produces visual output in the terminal, Graphviz DOT, or CSV / gnuplot format.
+MathVista-C is a C11 project that turns first-year computer science coursework into executable modules. It connects **Calculus**, **Discrete Mathematics**, and **Data Structures & Algorithms** through numerical methods, recurrence relations, dynamic programming, pointer-based data structures, graph traversal, sorting, memory management, and visual output.
+
+The goal is not to build a polished commercial product. The goal is to show how classroom concepts can become testable C programs with clear modules, error handling, and outputs that make algorithms easier to inspect.
+
+---
+
+## Project Purpose / Motivation
+
+This project was built as a learning portfolio project after studying three core first-year CS courses:
+
+| Course | How it appears in MathVista-C |
+|---|---|
+| **Calculus** | numerical gradient, Hessian matrix, directional derivative, Lagrange multiplier approximation, function sampling |
+| **Discrete Mathematics** | recurrence relations, memoization, dynamic programming, Stirling numbers, Catalan numbers, Dyck paths |
+| **Data Structures & Algorithms** | radix tree, skip list, graph DFS/BFS, iterative QuickSort, callback-based visualisation, memory pool |
+
+While solving textbook problems helped me understand definitions and formulas, implementing them in C forced me to think about additional engineering questions:
+
+- How should a mathematical object such as a vector, matrix, graph, or recurrence table be represented in memory?
+- How can a recursive formula be converted into memoization or bottom-up DP?
+- How should numerical approximation handle step size, dimension mismatch, and convergence failure?
+- How can pointer-heavy structures such as radix trees and skip lists be tested and visualized?
+- How can a library return useful errors instead of crashing silently?
+
+This is why MathVista-C is organized as a small computation engine rather than a group of unrelated homework files.
 
 ---
 
@@ -10,71 +34,159 @@ A high-performance C11 library demonstrating algorithm design, numerical methods
 
 ### Windows (native cmd / PowerShell + MinGW-w64)
 
-```powershell
+```bat
 .\build.bat
+.\bin\mathvista.exe menu
+```
+
+You can also run every demo directly:
+
+```bat
 .\bin\mathvista.exe all
 ```
 
-> Tip: if you see `?` characters in the output (e.g. `??output/...` or `4?4 matrix`),
-> your console is not in UTF-8. Run `chcp 65001` once per terminal session
-> to fix arrow / Greek / superscript characters.
+> Tip: if you see `?` characters in the output, your console is probably not using UTF-8. Run `chcp 65001` once in the same terminal session.
 
 ### Linux / macOS / MSYS2 / WSL
 
 ```bash
 make
+./bin/mathvista menu
+```
+
+You can also run every demo directly:
+
+```bash
 ./bin/mathvista all
 ```
 
 ### Single-demo run
 
-```
-.\bin\mathvista.exe stirling     (Windows)
-./bin/mathvista stirling   (Unix)
+```bash
+./bin/mathvista stirling
+./bin/mathvista catalan
+./bin/mathvista skiplist
+./bin/mathvista radix
+./bin/mathvista sort
+./bin/mathvista graph
+./bin/mathvista lagrange
+./bin/mathvista ascii
+./bin/mathvista csv
+./bin/mathvista mempool
+./bin/mathvista transform
 ```
 
-Replace `stirling` with any of: `catalan`, `skiplist`, `radix`, `sort`,
-`graph`, `lagrange`, `ascii`, `csv`, `mempool`, `transform`, or `all`.
+---
+
+## Interactive Demo Menu
+
+`menu` opens a small CLI menu that reuses the existing demo functions:
+
+```text
+MathVista-C Interactive Demo Menu
+
+1. Discrete Math Demos        Stirling numbers + Catalan / Dyck paths
+2. Calculus / Visualization   Lagrange + ASCII plots + CSV / gnuplot export
+3. QuickSort Visualization    Iterative Lomuto step-through
+4. DFS / BFS Graph Traversal  Step callbacks + DOT export
+5. Radix Tree Visualization   Compressed trie + DOT export
+6. Skip List Visualization    Insert/search/delete + DOT export
+7. Memory Pool Demo           Allocation health map + DOT export
+8. 3-D Transform Demo         Matrix transform + perspective projection
+9. Run All Demos
+0. Exit
+```
+
+This menu is intentionally simple. It is designed for portfolio demonstration: a reviewer can compile the project, choose a topic, and immediately see the relevant algorithm or mathematical module run.
 
 ---
 
 ## What gets generated
 
-Demo output files land in `output/`:
+Demo output files are written to `output/`:
 
 | File | Contents |
 |---|---|
-| `output/skiplist.dot` | Skip-list pointer diagram |
-| `output/radix.dot` | Compressed-trie tree |
-| `output/graph_dfs.dot` | DFS traversal coloured by vertex state |
-| `output/graph_bfs.dot` | BFS traversal |
-| `output/mempool.dot` | Memory-pool block map |
-| `output/sinc.csv` + `.gp` | sinc(x) data + gnuplot script |
-| `output/gauss2d.csv` + `.gp` | 2-D Gaussian surface |
+| `output/skiplist.dot` | skip-list pointer diagram |
+| `output/radix.dot` | compressed-trie / radix-tree diagram |
+| `output/graph_dfs.dot` | DFS traversal graph |
+| `output/graph_bfs.dot` | BFS traversal graph |
+| `output/mempool.dot` | memory-pool block map |
+| `output/sinc.csv` + `output/sinc.gp` | `sinc(x)` sampled data and gnuplot script |
+| `output/gauss2d.csv` + `output/gauss2d.gp` | 2-D Gaussian surface data and gnuplot script |
 | `output/matrix.csv` | 4x4 matrix export |
 
-Render DOT files: `dot -Tpng output/skiplist.dot -o skiplist.png`  
-Render plots: `gnuplot output/sinc.gp`
+Render DOT files with Graphviz:
+
+```bash
+dot -Tpng output/skiplist.dot -o docs/images/skiplist.png
+dot -Tpng output/radix.dot -o docs/images/radix_tree.png
+dot -Tpng output/graph_dfs.dot -o docs/images/graph_dfs.png
+dot -Tpng output/graph_bfs.dot -o docs/images/graph_bfs.png
+dot -Tpng output/mempool.dot -o docs/images/mempool.png
+```
+
+Render gnuplot outputs:
+
+```bash
+gnuplot output/sinc.gp
+gnuplot output/gauss2d.gp
+```
+
+---
+
+## Visual Output / Screenshots
+
+The project can produce several kinds of visual output:
+
+- terminal ASCII plots for one-variable functions;
+- terminal histogram output;
+- Graphviz DOT diagrams for pointer-based structures and graph traversal;
+- CSV data and gnuplot scripts for sampled functions and surfaces;
+- memory-pool state visualisation for checking allocation behavior.
+
+Suggested screenshot files for the GitHub README:
+
+| Suggested image path | How to generate it |
+|---|---|
+| `docs/images/radix_tree.png` | `dot -Tpng output/radix.dot -o docs/images/radix_tree.png` |
+| `docs/images/skiplist.png` | `dot -Tpng output/skiplist.dot -o docs/images/skiplist.png` |
+| `docs/images/graph_bfs.png` | `dot -Tpng output/graph_bfs.dot -o docs/images/graph_bfs.png` |
+| `docs/images/graph_dfs.png` | `dot -Tpng output/graph_dfs.dot -o docs/images/graph_dfs.png` |
+| `docs/images/mempool.png` | `dot -Tpng output/mempool.dot -o docs/images/mempool.png` |
+| `docs/images/sinc.png` | `gnuplot output/sinc.gp` then copy/move generated image if needed |
+| `docs/images/gauss2d.png` | `gnuplot output/gauss2d.gp` then copy/move generated image if needed |
+
+After generating the images, they can be embedded here:
+
+```md
+![Radix tree visualization](docs/images/radix_tree.png)
+![Skip list visualization](docs/images/skiplist.png)
+![BFS graph traversal](docs/images/graph_bfs.png)
+![Memory pool visualization](docs/images/mempool.png)
+```
+
+The image links are listed as placeholders because the PNG files should be generated from the current program output, not invented manually.
 
 ---
 
 ## Project Structure
 
-```
+```text
 MathVista-C/
-├── include/                  # 13 public headers (flat, no sub-directory)
+├── include/                  # public headers
 │   ├── math_engine.h         # MVec, MMat, MemoTable
-│   ├── memory_pool.h         # Fixed-block memory pool
-│   ├── common.h              # Timer, logger, banner
+│   ├── memory_pool.h         # fixed-block memory pool
+│   ├── common.h              # timer, logger, banner
 │   ├── discrete.h            # Stirling, Catalan, Dyck paths
-│   ├── calculus.h            # Gradient, Hessian, Lagrange
+│   ├── calculus.h            # gradient, Hessian, Lagrange
 │   ├── transform3d.h         # 4x4 homogeneous transforms
-│   ├── ds_skiplist.h         # Probabilistic skip list
-│   ├── ds_radix.h            # Compressed radix tree
+│   ├── ds_skiplist.h         # probabilistic skip list
+│   ├── ds_radix.h            # compressed radix tree
 │   ├── algo_sort.h           # QuickSort with step callbacks
 │   ├── algo_graph.h          # DFS + BFS with step callbacks
 │   ├── viz_dot.h             # Graphviz DOT exporter
-│   ├── viz_ascii.h           # Terminal function plotter
+│   ├── viz_ascii.h           # terminal function plotter
 │   └── viz_csv.h             # CSV + gnuplot script exporter
 │
 ├── src/
@@ -84,11 +196,13 @@ MathVista-C/
 │   ├── ds/                   # skiplist.c, radix.c
 │   ├── algo/                 # sort.c, graph.c
 │   ├── viz/                  # viz_dot.c, viz_ascii.c, viz_csv.c
-│   └── main.c                # CLI dispatcher (11 named demos)
+│   └── main.c                # CLI dispatcher + interactive menu
 │
+├── output/                   # generated DOT / CSV / gnuplot files
+├── docs/images/              # suggested location for generated screenshots
 ├── build.bat                 # Windows native build
-├── diagnose.bat              # Per-file compile diagnostic for Windows
-├── Makefile                  # Unix build (gmake / GNU Make)
+├── diagnose.bat              # per-file compile diagnostic for Windows
+├── Makefile                  # Unix build
 └── README.md
 ```
 
@@ -96,127 +210,133 @@ MathVista-C/
 
 ## Build System Details
 
-Both `build.bat` and the `Makefile` run the same underlying compilation:
+Both `build.bat` and the `Makefile` compile the same C modules:
 
+```bash
+gcc -std=c11 -Wall -Wextra -O2 -Iinclude <all .c files> -o bin/mathvista -lm
 ```
-gcc -std=c11 -Wall -Wextra -O2 -Iinclude  <all 16 .c files>  -o bin/mathvista  -lm
-```
 
-The single `-Iinclude` flag is what makes every `#include "math_engine.h"`
-resolve correctly regardless of which subdirectory the `.c` file is in.
-**Do not** use `../../include/xxx.h` relative paths — they break header-to-header
-references and are unnecessary when `-Iinclude` is set.
+The single `-Iinclude` flag makes every `#include "math_engine.h"` resolve correctly regardless of which subdirectory the `.c` file is in.
 
-### Makefile targets (Unix)
+### Makefile targets
 
-```makefile
-make            # optimised (-O2), all warnings enabled
-make lib        # produces build/libmathvista.a (link into external projects)
-make debug      # adds -g -fsanitize=address for memory debugging
+```bash
+make            # optimized build
+make lib        # produces build/libmathvista.a
+make debug      # adds -g -fsanitize=address
 make test       # build + run every demo
-make clean      # wipe build/
+make clean      # remove build artifacts
 ```
-
-### Windows scripts
-
-| Script | Purpose |
-|---|---|
-| `build.bat` | One-shot full build, produces `bin/mathvista.exe` |
-| `diagnose.bat` | Compiles each `.c` separately to pinpoint which file fails; useful when symbols go missing |
 
 ### Compiler requirements
 
-- GCC or Clang with C11 support (`-std=c11`)
-- The only external dependency is `libm` (linked via `-lm`)
-- On Windows, **MinGW-w64** is recommended (download a recent winlibs build)
-- `aligned_alloc` is intentionally avoided — `malloc` is used everywhere
-  because MinGW does not expose `aligned_alloc` in `<stdlib.h>`. Alignment
-  is achieved by rounding block sizes up to 16 bytes before allocation,
-  which `malloc` already guarantees on 64-bit systems.
+- GCC or Clang with C11 support;
+- standard C library + `libm`;
+- MinGW-w64 is recommended for Windows native builds;
+- no large external dependency is required for the core program;
+- Graphviz and gnuplot are optional tools for rendering generated visual outputs.
 
 ---
 
 ## Module Reference
 
-### Core (`math_engine`, `memory_pool`, `common`)
+### Core: `math_engine`, `memory_pool`, `common`
 
-**MVec / MMat** — dynamic-dimension vector and row-major matrix with full operator set (`add`, `sub`, `scale`, `dot`, `norm`, `normalize`, `mul`, `transpose`). All mutating operations follow the output-parameter convention and return `mv_status_t` so callers can propagate errors cleanly.
+- `MVec` / `MMat`: dynamic-dimension vector and row-major matrix operations.
+- `MemoTable`: open-addressing hash table for recurrence memoization.
+- `MemPool`: fixed-size block allocator using an intrusive free list.
+- `common`: logging, timer, banners, and common status handling.
 
-**MemoTable** — open-addressing hash table keyed on `(int64, int64)` pairs:
+### Discrete Mathematics
 
-- Power-of-2 capacity so `index = hash & (cap - 1)` avoids division in the hot path
-- SplitMix64-derived mixing for uniform distribution of `(n, k)`-style keys
-- Three-state slots (empty / occupied / tombstone) for correct deletion
-- Automatic rehash at load factor 0.7; tombstones are purged on every resize
+- Stirling numbers of the second kind using memoized recursion and bottom-up DP.
+- Catalan numbers using convolution recurrence.
+- Dyck path rendering for connecting Catalan numbers with valid path enumeration.
 
-**MemPool** — fixed-size block allocator using an intrusive free list: each free block's first bytes store the `MemPoolFreeNode *next` pointer, so metadata overhead is zero.
+### Calculus and Numerical Methods
 
-### Discrete Mathematics (`discrete`)
+- `numeric_gradient`: central difference approximation.
+- `numeric_hessian`: second-order numerical derivative approximation.
+- `numeric_directional_deriv`: directional derivative through normalized direction vectors.
+- `lagrange_solve`: approximate constrained optimization through tangent update and projection.
+- `transform3d`: 4x4 homogeneous transformations and perspective projection.
 
-**Stirling numbers of the 2nd kind** — `S(n, k)` via memoised top-down recursion and a separate rolling-array bottom-up DP. Both paths guard against `uint64_t` overflow using `__builtin_mul_overflow` / `__builtin_add_overflow`.
+### Data Structures
 
-**Catalan numbers** — computed with the convolution recurrence `C(n) = sum C(i) * C(n-1-i)`. Dyck path visualiser enumerates all valid paths of order `n` in lexicographic order.
+- Skip list with multi-level forward pointers.
+- Radix tree / compressed trie with prefix splitting.
+- Memory pool to practice allocation behavior and debugging.
 
-### Calculus (`calculus`, `transform3d`)
+### Algorithms
 
-**Numerical differentiation** (`gradient.c`):
+- Iterative Lomuto QuickSort with step callbacks.
+- Directed graph representation with DFS and BFS step callbacks.
+- Explicit stacks and queues used to avoid hiding the traversal logic.
 
-| Function | Formula | Cost |
-|---|---|---|
-| `numeric_gradient` | Central difference: `(f(x+h) - f(x-h)) / 2h` | `2n` evaluations |
-| `numeric_hessian` | Mixed 4-point / diagonal 3-point | `O(n^2)` evaluations |
-| `numeric_directional_deriv` | `(f(x+h*d) - f(x-h*d)) / 2h` | `2` evaluations |
+### Visualisation
 
-**Lagrange multipliers** (`lagrange.c`) — projected gradient ascent for `max f(x) s.t. g(x) = 0`. Two-step iteration: tangent step + Newton projection back to the constraint.
+- ASCII function plotter and histogram output.
+- Graphviz DOT export for data structures and graph traversal.
+- CSV and gnuplot export for sampled functions and 2-D surfaces.
 
-**3-D transforms** — all represented as 4x4 homogeneous matrices in row-major order. `t3d_project` multiplies a world-space point by the combined transform, performs the perspective divide, and maps NDC to pixel coordinates.
+---
 
-### Data Structures (`ds_skiplist`, `ds_radix`)
+## Learning Reflection
 
-**Skip list** — probabilistic multi-level linked list. Level generation uses an LCG with promotion probability 0.5.
+This project helped me turn course knowledge into implementation details.
 
-**Radix tree** — compressed trie for NUL-terminated string keys. Insertion handles three cases: no matching child (append leaf), full edge match (descend), partial match (split edge at LCP position).
+In **Calculus**, formulas such as gradients, Hessians, and directional derivatives became numerical algorithms. I had to think about how many function evaluations were required, how to choose a finite-difference step size, and how to represent vectors and matrices safely in C. The Lagrange multiplier demo also helped me connect constrained optimization with iterative numerical procedures.
 
-### Algorithms (`algo_sort`, `algo_graph`)
+In **Discrete Mathematics**, recurrence relations became executable code. Stirling numbers and Catalan numbers were no longer only definitions on paper; they became a chance to compare recursive memoization and bottom-up dynamic programming. This made the idea of “state” much more concrete.
 
-**QuickSort** — iterative Lomuto partition with an explicit `(lo, hi)` range stack. A `size_t` underflow guard protects `boundary - 1` when the pivot lands at `lo`.
+In **Data Structures and Algorithms**, the main difficulty was not just knowing what a structure means, but implementing it correctly. A radix tree requires careful edge splitting when two strings share only part of a prefix. A skip list requires multiple forward pointers to remain consistent across levels. DFS and BFS require explicit state recording if I want to show the traversal process clearly. Implementing these in C also forced me to practice pointer management, dynamic allocation, cleanup, and error handling.
 
-**Graph traversal** — directed graph with per-vertex dynamic adjacency arrays. DFS uses an explicit `(vertex, adj_index)` frame stack so it correctly classifies `TREE_EDGE` / `BACK_EDGE` / `CROSS_EDGE`. BFS uses a pre-allocated queue.
+Visualization became a way to verify my own work. DOT files, ASCII plots, and CSV exports made it easier to check whether a data structure or algorithm was behaving as expected. Through this project, I learned that a useful CS project is not only about producing an answer, but also about designing a system that can be tested, inspected, and explained.
 
-### Visualisation (`viz_dot`, `viz_ascii`, `viz_csv`)
+---
 
-**viz_dot** — generic visitor pattern. `DotNode` wrappers carry `user_data` (printed as hex address) and labelled edges. Cycle safety via a hash-set of seen pointers. Specialised renderers for `MemoTable` and `MemPool`.
+## Portfolio Value / What This Project Demonstrates
 
-**viz_ascii** — two-pass row-scan strategy avoids heap canvas allocation. Character priority: `*` (curve) > `+` (axis crossing) > `-` (x=0 line) > `|` (y=0 col) > space.
+MathVista-C demonstrates:
 
-**viz_csv** — `csv_export_fn2d` inserts blank lines between scanlines to satisfy gnuplot's `pm3d` grid convention.
+- C programming with explicit pointers, arrays, structs, and memory management;
+- modular project organization across headers and source files;
+- numerical computation based on calculus concepts;
+- recurrence, memoization, and dynamic programming from discrete mathematics;
+- implementation of non-trivial data structures such as radix trees and skip lists;
+- algorithmic thinking through sorting and graph traversal;
+- visualization as a debugging and explanation tool;
+- error handling through explicit status codes instead of hidden failures;
+- the ability to connect mathematical foundations with computer science implementation.
+
+For a transfer portfolio, the main value of this project is that it shows a first-year CS learning path: from classroom formulas and definitions to a working C system that can compute, visualize, and demonstrate the underlying concepts.
 
 ---
 
 ## CLI Demo Reference
 
-```
+```text
 mathvista <demo>
-
-  stirling   Stirling S(n,k) triangle (n=0..12) + MemoTable stats
-  catalan    Catalan C(n=0..14) + all Dyck paths of order 3
-  skiplist   10-node skip list: insert / search / delete + DOT
-  radix      9-word compressed trie + DOT
-  sort       QuickSort step-through on 9 elements
-  graph      DFS + BFS on a 7-node directed graph with cycle
-  lagrange   max x+y s.t. x^2+y^2=1  and  min x+y s.t. x^2/4+y^2=1
-  ascii      sin(x), sin(x)+cos(x) overlay, x^2-2, sin histogram
-  csv        sinc(x) 1-D + Gaussian 2-D surface + gnuplot scripts
-  mempool    64-block pool with scattered frees: ASCII + DOT
-  transform  8 unit-cube corners projected through perspective matrix
-  all        All of the above
+  menu       Interactive demo selector
+  stirling   Stirling S(n,k) triangle + MemoTable stats
+  catalan    Catalan C(n) + Dyck paths
+  skiplist   Skip list insert/search/delete + DOT export
+  radix      Radix tree / compressed trie + DOT export
+  sort       QuickSort step-through
+  graph      DFS + BFS graph traversal + DOT export
+  lagrange   Lagrange multiplier constrained optimization
+  ascii      ASCII function plots and histogram
+  csv        CSV + gnuplot script export
+  mempool    Memory-pool state demo + DOT export
+  transform  3-D rotation + perspective projection
+  all        Run all demos
 ```
 
 ---
 
 ## Error Handling
 
-All library functions return `mv_status_t`. Use `mv_strerror(st)` to get a human-readable string:
+Most library functions return `mv_status_t`. Use `mv_strerror(st)` to get a readable error message.
 
 ```c
 mv_status_t st = sl_insert(&sl, key, value);
@@ -226,24 +346,37 @@ if (st != MV_OK)
 
 | Code | Meaning |
 |---|---|
-| `MV_OK` | Success |
-| `MV_ERR_ALLOC` | `malloc` / `realloc` / `fopen` failed |
-| `MV_ERR_DIM_MISMATCH` | Vector or matrix dimensions incompatible |
-| `MV_ERR_OUT_OF_RANGE` | Index or parameter out of valid range |
-| `MV_ERR_SINGULAR` | Degenerate matrix, zero norm, or zero gradient |
+| `MV_OK` | success |
+| `MV_ERR_ALLOC` | `malloc`, `realloc`, or `fopen` failed |
+| `MV_ERR_DIM_MISMATCH` | vector or matrix dimensions incompatible |
+| `MV_ERR_OUT_OF_RANGE` | index or parameter out of valid range |
+| `MV_ERR_SINGULAR` | degenerate matrix, zero norm, or zero gradient |
 | `MV_ERR_OVERFLOW` | `uint64_t` arithmetic overflow detected |
-| `MV_ERR_NULL_PTR` | Required pointer argument was NULL |
-| `MV_ERR_NOT_FOUND` | Key absent in data structure |
-| `MV_ERR_CONVERGE` | Iterative solver did not converge within `max_iter` |
+| `MV_ERR_NULL_PTR` | required pointer argument was `NULL` |
+| `MV_ERR_NOT_FOUND` | key absent in data structure |
+| `MV_ERR_CONVERGE` | iterative solver did not converge within `max_iter` |
 
 ---
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
+| Symptom | Possible cause | Fix |
 |---|---|---|
-| `undefined reference to mvec_create` (and many others) | A source file (typically `math_engine.c`) was truncated to a partial copy | Run `diagnose.bat` — Step 1 shows file sizes; `math_engine.c` should be around 9.8 KB |
-| `command syntax incorrect` from a `.bat` file | LF line endings (Unix) on a Windows batch file | Re-download `build.bat` / `diagnose.bat` with CRLF line endings |
-| `implicit declaration of aligned_alloc` | Older `memory_pool.c` using `aligned_alloc` (not in MinGW) | Get the latest `memory_pool.c` which uses plain `malloc` |
-| `?` characters in console output | Console code page is CP950/CP1252, not UTF-8 | Run `chcp 65001` in the same PowerShell session before running mathvista |
-| PowerShell drops files from a multi-line `gcc ... ` command | Trailing whitespace after a backtick (`` ` ``) breaks line continuation | Use `build.bat` instead of typing the gcc command directly |
+| `undefined reference to mvec_create` | source file missing or truncated | run `diagnose.bat` and check compile steps |
+| `command syntax incorrect` from `.bat` | LF line endings in Windows batch file | re-save `.bat` with CRLF line endings |
+| `implicit declaration of aligned_alloc` | older MinGW compatibility issue | use the current `memory_pool.c` implementation based on `malloc` |
+| `?` characters in terminal output | console is not using UTF-8 | run `chcp 65001` on Windows |
+| DOT files exist but no PNG appears | Graphviz is not installed or not run | install Graphviz and run `dot -Tpng ...` |
+| CSV exists but no plot image appears | gnuplot is not installed or not run | install gnuplot and run `gnuplot output/sinc.gp` |
+
+---
+
+## Future Improvements
+
+Possible future extensions:
+
+- add more user-input examples for selected algorithms;
+- generate a small gallery of rendered screenshots in `docs/images/`;
+- add unit tests for edge cases such as empty radix tree, duplicate keys, and graph cycles;
+- improve numerical-method documentation with derivations and error analysis;
+- add more algorithms while keeping the project focused on first-year CS foundations.
