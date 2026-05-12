@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+
+#ifdef _WIN32
+#include <direct.h>
+#define MV_MKDIR(d) _mkdir(d)
+#else
+#include <sys/stat.h>
+#define MV_MKDIR(d) mkdir((d), 0755)
+#endif
+
 #include "../include/common.h"
 #include "../include/math_engine.h"
 #include "../include/memory_pool.h"
@@ -38,7 +47,7 @@ static void demo_stirling()
             uint64_t v;
             stirling2_memoized(n, k, &memo, &v);
             if (k <= n) printf("  %-6llu", (unsigned long long)v);
-            else        printf("  %-6s", ".");
+            else printf("  %-6s", ".");
         }
         putchar('\n');
     }
@@ -114,6 +123,7 @@ static void demo_radix()
     printf("\n  exported → " OUT("radix.dot") "\n");
     radix_destroy(&rt);
 }
+
 static void demo_sort()
 {
     mv_banner("QuickSort  (Iterative Lomuto, step-through)");
@@ -147,8 +157,7 @@ static void demo_graph()
     printf("\n--- BFS from 0 ---\n");
     graph_bfs_stepped(&g, 0, graph_print_step, NULL);
     graph_export_dot(&g, NULL, OUT("graph_bfs.dot"), "BFS");
-    printf("\n  exported → " OUT("graph_dfs.dot")
-           "  " OUT("graph_bfs.dot") "\n");
+    printf("\n  exported → " OUT("graph_dfs.dot")"  " OUT("graph_bfs.dot") "\n");
     graph_destroy(&g);
 }
 
@@ -177,17 +186,14 @@ static void demo_lagrange()
 {
     mv_banner("Lagrange Multipliers");
     printf("  max x+y  s.t.  x²+y²=1\n");
-    double xi[] =
-    { 0.9, 0.1 };
+    double xi[] = { 0.9, 0.1 };
     MVec xinit, xout;
     mvec_create_from(&xinit, xi, 2);
     mvec_create(&xout, 2);
     double lam;
     mv_status_t st = lagrange_solve(&xout, &lam, obj_xpy, con_circle, NULL, NULL, &xinit, 2000, 1e-9);
-    printf("  result : x=(%.6f, %.6f)  λ=%.6f  status=%s\n",
-           xout.data[0], xout.data[1], lam, mv_strerror(st));
-    printf("  analytic: (%.6f, %.6f)  λ=%.6f\n",
-           sqrt(2.0)/2, sqrt(2.0)/2, sqrt(2.0)/2);
+    printf("  result : x=(%.6f, %.6f)  λ=%.6f  status=%s\n", xout.data[0], xout.data[1], lam, mv_strerror(st));
+    printf("  analytic: (%.6f, %.6f)  λ=%.6f\n", sqrt(2.0)/2, sqrt(2.0)/2, sqrt(2.0)/2);
     mvec_destroy(&xinit); mvec_destroy(&xout);
     printf("\n  min x+y  s.t.  x²/4+y²=1\n");
     double xi2[] = { -1.0, -0.5 };
@@ -214,6 +220,7 @@ static double fn_x2(const MVec* x, void* ud)
     (void)ud;
     return x->data[0]*x->data[0] - 2.0;
 }
+
 static void demo_ascii()
 {
     mv_banner("ASCII Function Plotter");
@@ -272,7 +279,7 @@ static void demo_mempool()
     mempool_create(&pool, 48, 64);
     void* ptrs[40];
     for (int i = 0; i < 40; ++i) ptrs[i] = mempool_alloc(&pool);
-    int primes[] = { 2,3,5,7,11,13,17,19,23,29,31,37};
+    int primes[] = { 2,3,5,7,11,13,17,19,23,29,31,37 };
     for (int i = 0; i < 12; ++i) mempool_free(&pool, ptrs[primes[i]]);
     mempool_render_ascii(&pool);
     dot_export_mem_pool(OUT("mempool.dot"), &pool, "MemPool");
@@ -306,8 +313,11 @@ static void demo_transform()
         t3d_project(&px, &py, &T, corners[i][0], corners[i][1], corners[i][2], 800, 600);
         printf("    (%+.1f,%+.1f,%+.1f) → screen (%.1f, %.1f)\n", corners[i][0], corners[i][1], corners[i][2], px, py);
     }
-    mmat_destroy(&Rx); mmat_destroy(&Ry);
-    mmat_destroy(&P);  mmat_destroy(&tmp); mmat_destroy(&T);
+    mmat_destroy(&Rx);
+    mmat_destroy(&Ry);
+    mmat_destroy(&P);
+    mmat_destroy(&tmp);
+    mmat_destroy(&T);
 }
 
 typedef struct
@@ -342,8 +352,7 @@ static void print_usage(const char* prog)
 
 int main(int argc, char** argv)
 {
-    if (system("mkdir -p output") != 0)
-        mv_log(MV_WARN, "Could not create output/ directory");
+    (void)MV_MKDIR("output");
     if (argc < 2)
     {
         print_usage(argv[0]);
