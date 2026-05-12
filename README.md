@@ -156,7 +156,7 @@ data structures, and algorithm behavior:
 ### Example Terminal Output
 
 <p align="center">
-  <img src="docs/images/transform_demo.png" width="720" alt="3-D transform demo terminal output">
+  <img src="docs/images/3dtransform.png" width="720" alt="3-D transform demo terminal output">
 </p>
 
 ---
