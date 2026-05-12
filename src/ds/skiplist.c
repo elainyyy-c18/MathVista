@@ -1,4 +1,4 @@
-#include "../../include/ds_skiplist.h"
+#include "ds_skiplist.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

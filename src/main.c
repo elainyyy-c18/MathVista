@@ -11,19 +11,19 @@
 #define MV_MKDIR(d) mkdir((d), 0755)
 #endif
 
-#include "../include/common.h"
-#include "../include/math_engine.h"
-#include "../include/memory_pool.h"
-#include "../include/discrete.h"
-#include "../include/calculus.h"
-#include "../include/transform3d.h"
-#include "../include/ds_skiplist.h"
-#include "../include/ds_radix.h"
-#include "../include/algo_sort.h"
-#include "../include/algo_graph.h"
-#include "../include/viz_dot.h"
-#include "../include/viz_ascii.h"
-#include "../include/viz_csv.h"
+#include "common.h"
+#include "math_engine.h"
+#include "memory_pool.h"
+#include "discrete.h"
+#include "calculus.h"
+#include "transform3d.h"
+#include "ds_skiplist.h"
+#include "ds_radix.h"
+#include "algo_sort.h"
+#include "algo_graph.h"
+#include "viz_dot.h"
+#include "viz_ascii.h"
+#include "viz_csv.h"
 
 #define OUT(path) "output/" path
 

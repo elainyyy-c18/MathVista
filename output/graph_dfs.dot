@@ -1,0 +1,23 @@
+digraph DFS {
+  rankdir=TB;
+  node [fontname="Menlo", fontsize=12, shape=circle, style=filled, fixedsize=true, width=0.6];
+  edge [fontname="Menlo", fontsize=9];
+
+  v0 [label="0", fillcolor="#ddeeff"];
+  v1 [label="1", fillcolor="#ddeeff"];
+  v2 [label="2", fillcolor="#ddeeff"];
+  v3 [label="3", fillcolor="#ddeeff"];
+  v4 [label="4", fillcolor="#ddeeff"];
+  v5 [label="5", fillcolor="#ddeeff"];
+  v6 [label="6", fillcolor="#ddeeff"];
+
+  v0 -> v1;
+  v0 -> v2;
+  v1 -> v3;
+  v1 -> v2;
+  v2 -> v4;
+  v3 -> v0;
+  v3 -> v5;
+  v4 -> v6;
+  v6 -> v5;
+}

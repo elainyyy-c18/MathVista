@@ -1,12 +1,22 @@
+# MathVista-C — GNU Make build file (Linux / macOS / MSYS2 / WSL)
+#
+# Windows users on native PowerShell / cmd should use build.bat instead.
+# Both build paths invoke the same gcc command:
+#   gcc -std=c11 -O2 -Iinclude  <all .c files>  -o mathvista  -lm
+#
+# The single -Iinclude flag is what makes #include "math_engine.h"
+# resolve correctly from any subdirectory.  Do NOT use ../../include/xxx.h
+# style relative paths — they break header-to-header includes.
+
 CC      = gcc
 CFLAGS  = -std=c11 -Wall -Wextra -Wpedantic -O2 -Iinclude
 LDFLAGS = -lm
 
 BUILD   = build
-TARGET  = $(BUILD)/mathvista
+TARGET  = bin/mathvista
 LIB     = $(BUILD)/libmathvista.a
 
-# Source lists (all implementation files except main)
+# Source lists
 SRCS_CORE = \
     src/core/math_engine.c \
     src/core/memory_pool.c \
@@ -41,24 +51,24 @@ LIB_SRCS = \
 LIB_OBJS = $(patsubst src/%.c, $(BUILD)/%.o, $(LIB_SRCS))
 MAIN_OBJ = $(BUILD)/main.o
 
-# Default target
-.PHONY: all clean test lib dirs
+.PHONY: all clean test lib dirs debug help
 
+# Default target
 all: dirs $(TARGET)
 
 # Executable
 $(TARGET): $(LIB_OBJS) $(MAIN_OBJ)
 	$(CC) $^ -o $@ $(LDFLAGS)
-	@echo "  linked  → $@"
+	@echo "  linked  -> $@"
 
-# Static library (optional, usable by external projects)
+# Static library (optional, for linking into external projects)
 lib: dirs $(LIB)
 
 $(LIB): $(LIB_OBJS)
 	ar rcs $@ $^
-	@echo "  archive → $@"
+	@echo "  archive -> $@"
 
-# Pattern rule: src/a/b.c → build/a/b.o
+# Pattern rule: src/a/b.c -> build/a/b.o
 $(BUILD)/main.o: src/main.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -76,14 +86,15 @@ dirs:
 	    $(BUILD)/ds \
 	    $(BUILD)/algo \
 	    $(BUILD)/viz \
+	    bin \
 	    output
 
 # Run all demos
 test: all
 	./$(TARGET) all
 
-# Quick per-module debug build (add -g -fsanitize=address)
-debug: CFLAGS += -g -fsanitize=address -fno-omit-frame-pointer
+# Debug build: -g -fsanitize=address for memory diagnostics
+debug: CFLAGS  += -g -fsanitize=address -fno-omit-frame-pointer
 debug: LDFLAGS += -fsanitize=address
 debug: all
 
@@ -91,3 +102,14 @@ debug: all
 clean:
 	rm -rf $(BUILD)
 	@echo "  cleaned build/"
+
+# Help
+help:
+	@echo "MathVista-C build targets:"
+	@echo "  make           Build optimised executable -> $(TARGET)"
+	@echo "  make lib       Build static library       -> $(LIB)"
+	@echo "  make debug     Build with AddressSanitizer"
+	@echo "  make test      Build and run all demos"
+	@echo "  make clean     Remove build artifacts"
+	@echo ""
+	@echo "Windows users: run build.bat instead of make."

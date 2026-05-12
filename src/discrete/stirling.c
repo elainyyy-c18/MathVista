@@ -1,5 +1,5 @@
-#include "../../include/discrete.h"
-#include "../../include/math_engine.h"
+#include "discrete.h"
+#include "math_engine.h"
 #include <stdlib.h>
 #include <string.h>
 

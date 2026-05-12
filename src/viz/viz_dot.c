@@ -1,5 +1,5 @@
-#include "../../include/viz_dot.h"
-#include "../../include/memory_pool.h"
+#include "viz_dot.h"
+#include "memory_pool.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

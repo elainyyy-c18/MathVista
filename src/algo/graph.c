@@ -1,4 +1,4 @@
-#include "../../include/algo_graph.h"
+#include "algo_graph.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

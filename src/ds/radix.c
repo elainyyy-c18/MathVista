@@ -1,4 +1,4 @@
-#include "../../include/ds_radix.h"
+#include "ds_radix.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

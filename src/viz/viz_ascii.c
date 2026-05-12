@@ -1,4 +1,4 @@
-#include "../../include/viz_ascii.h"
+#include "viz_ascii.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

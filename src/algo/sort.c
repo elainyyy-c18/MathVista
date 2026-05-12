@@ -1,4 +1,4 @@
-#include "../../include/algo_sort.h"
+#include "algo_sort.h"
 #include <stdio.h>
 #include <stdlib.h>
 
