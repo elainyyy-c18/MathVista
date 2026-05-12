@@ -139,36 +139,25 @@ gnuplot output/gauss2d.gp
 
 ## Visual Output / Screenshots
 
-The project can produce several kinds of visual output:
+MathVista-C includes several visualization outputs for checking mathematical results,
+data structures, and algorithm behavior:
 
 - terminal ASCII plots for one-variable functions;
 - terminal histogram output;
-- Graphviz DOT diagrams for pointer-based structures and graph traversal;
-- CSV data and gnuplot scripts for sampled functions and surfaces;
-- memory-pool state visualisation for checking allocation behavior.
+- Graphviz DOT diagrams for radix trees, skip lists, graph traversal, and memory-pool states;
+- CSV data and gnuplot scripts for sampled functions and surfaces.
 
-Suggested screenshot files for the GitHub README:
+### Interactive Demo Menu
 
-| Suggested image path | How to generate it |
-|---|---|
-| `docs/images/radix_tree.png` | `dot -Tpng output/radix.dot -o docs/images/radix_tree.png` |
-| `docs/images/skiplist.png` | `dot -Tpng output/skiplist.dot -o docs/images/skiplist.png` |
-| `docs/images/graph_bfs.png` | `dot -Tpng output/graph_bfs.dot -o docs/images/graph_bfs.png` |
-| `docs/images/graph_dfs.png` | `dot -Tpng output/graph_dfs.dot -o docs/images/graph_dfs.png` |
-| `docs/images/mempool.png` | `dot -Tpng output/mempool.dot -o docs/images/mempool.png` |
-| `docs/images/sinc.png` | `gnuplot output/sinc.gp` then copy/move generated image if needed |
-| `docs/images/gauss2d.png` | `gnuplot output/gauss2d.gp` then copy/move generated image if needed |
+<p align="center">
+  <img src="docs/images/menu.png" width="720" alt="MathVista-C interactive demo menu">
+</p>
 
-After generating the images, they can be embedded here:
+### Example Terminal Output
 
-```md
-![Radix tree visualization](docs/images/radix_tree.png)
-![Skip list visualization](docs/images/skiplist.png)
-![BFS graph traversal](docs/images/graph_bfs.png)
-![Memory pool visualization](docs/images/mempool.png)
-```
-
-The image links are listed as placeholders because the PNG files should be generated from the current program output, not invented manually.
+<p align="center">
+  <img src="docs/images/transform_demo.png" width="720" alt="3-D transform demo terminal output">
+</p>
 
 ---
 
