@@ -344,7 +344,5 @@ if (st != MV_OK)
 Possible future extensions:
 
 - add more user-input examples for selected algorithms;
-- generate a small gallery of rendered screenshots in `docs/images/`;
 - add unit tests for edge cases such as empty radix tree, duplicate keys, and graph cycles;
-- improve numerical-method documentation with derivations and error analysis;
-- add more algorithms while keeping the project focused on first-year CS foundations.
+- improve numerical-method documentation with derivations and error analysis.
