@@ -2,9 +2,9 @@
 
 **Academic Mathematics Visualisation & Computation Engine written in C11**
 
-MathVista-C is a C11 project that turns first-year computer science coursework into executable modules. It connects **Calculus**, **Discrete Mathematics**, and **Data Structures & Algorithms** through numerical methods, recurrence relations, dynamic programming, pointer-based data structures, graph traversal, sorting, memory management, and visual output.
+MathVista-C is a C11 project that turns my first-year computer science coursework into executable modules. It connects **Calculus**, **Discrete Mathematics**, and **Data Structures & Algorithms** through numerical methods, recurrence relations, dynamic programming, graph traversal, sorting, and visual output, etc.
 
-The goal is not to build a polished commercial product. The goal is to show how classroom concepts can become testable C programs with clear modules, error handling, and outputs that make algorithms easier to inspect.
+The goal is to show how classroom concepts can become testable C programs with clear modules, error handling, and outputs that make algorithms easier to inspect.
 
 ---
 
@@ -26,7 +26,7 @@ While solving textbook problems helped me understand definitions and formulas, i
 - How can pointer-heavy structures such as radix trees and skip lists be tested and visualized?
 - How can a library return useful errors instead of crashing silently?
 
-This is why MathVista-C is organized as a small computation engine rather than a group of unrelated homework files.
+This is why MathVista-C is organized as a small computation engine.
 
 ---
 
@@ -99,7 +99,7 @@ MathVista-C Interactive Demo Menu
 0. Exit
 ```
 
-This menu is intentionally simple. It is designed for portfolio demonstration: a reviewer can compile the project, choose a topic, and immediately see the relevant algorithm or mathematical module run. On Windows, `run_menu.bat` can be used to open this menu with UTF-8 output enabled.
+This menu is designed for portfolio demonstration: a reviewer can choose a topic, and immediately see the relevant algorithm or mathematical module run. On Windows, `run_menu.bat` can be used to open this menu with UTF-8 output enabled.
 
 ---
 
@@ -278,38 +278,6 @@ make clean      # remove build artifacts
 - ASCII function plotter and histogram output.
 - Graphviz DOT export for data structures and graph traversal.
 - CSV and gnuplot export for sampled functions and 2-D surfaces.
-
----
-
-## Learning Reflection
-
-This project helped me turn course knowledge into implementation details.
-
-In **Calculus**, formulas such as gradients, Hessians, and directional derivatives became numerical algorithms. I had to think about how many function evaluations were required, how to choose a finite-difference step size, and how to represent vectors and matrices safely in C. The Lagrange multiplier demo also helped me connect constrained optimization with iterative numerical procedures.
-
-In **Discrete Mathematics**, recurrence relations became executable code. Stirling numbers and Catalan numbers were no longer only definitions on paper; they became a chance to compare recursive memoization and bottom-up dynamic programming. This made the idea of “state” much more concrete.
-
-In **Data Structures and Algorithms**, the main difficulty was not just knowing what a structure means, but implementing it correctly. A radix tree requires careful edge splitting when two strings share only part of a prefix. A skip list requires multiple forward pointers to remain consistent across levels. DFS and BFS require explicit state recording if I want to show the traversal process clearly. Implementing these in C also forced me to practice pointer management, dynamic allocation, cleanup, and error handling.
-
-Visualization became a way to verify my own work. DOT files, ASCII plots, and CSV exports made it easier to check whether a data structure or algorithm was behaving as expected. Through this project, I learned that a useful CS project is not only about producing an answer, but also about designing a system that can be tested, inspected, and explained.
-
----
-
-## Portfolio Value / What This Project Demonstrates
-
-MathVista-C demonstrates:
-
-- C programming with explicit pointers, arrays, structs, and memory management;
-- modular project organization across headers and source files;
-- numerical computation based on calculus concepts;
-- recurrence, memoization, and dynamic programming from discrete mathematics;
-- implementation of non-trivial data structures such as radix trees and skip lists;
-- algorithmic thinking through sorting and graph traversal;
-- visualization as a debugging and explanation tool;
-- error handling through explicit status codes instead of hidden failures;
-- the ability to connect mathematical foundations with computer science implementation.
-
-For a transfer portfolio, the main value of this project is that it shows a first-year CS learning path: from classroom formulas and definitions to a working C system that can compute, visualize, and demonstrate the underlying concepts.
 
 ---
 
